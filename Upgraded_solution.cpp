@@ -5,6 +5,7 @@
 #include <fstream>
 #include <algorithm>
 #include <numeric>
+#include <cmath>
 #include "profile.h"
 
 using namespace std;
@@ -133,18 +134,17 @@ pair<int, vector<int>> full_enum(const vector<int>& v, const vector<vector<int>>
     return { result.rbegin()->first, result.rbegin()->second };
 }
 
-void generate_sample(const string& filename) {   //Генерация данных
+void generate_sample(const string& filename, int N, int M) {   //Генерация данных
     srand(time(NULL));
     ofstream output;
     vector<int> restrictions;
     output.open(filename);
-    int N = 15;
-    int M = 5;
     restrictions.resize(M);
     output << N << " " << M << '\n';
     for (int i = 0; i < N; i++) {
         output << rand() % 95 + 5 << " ";
     }
+    output << "\n\n";
     for (int j = 0; j < M; j++) {
         restrictions[j] = 0;
         for (int i = 0; i < N; i++) {
@@ -154,6 +154,7 @@ void generate_sample(const string& filename) {   //Генерация данны
         }
         output << '\n';
     }
+    output << "\n";
     for (auto e : restrictions) {
         output << e - rand() % (e / 2) << " ";
     }
@@ -167,7 +168,12 @@ void input_and_preparation(int& N, int& M, vector<int>& v, vector<int>& b,
     cin >> answer;
     fstream input;
     if (answer == 1) {
-        generate_sample("generated_input.txt");
+        int n, m;
+        cout << "Number of variables:";
+        cin >> n;
+        cout << "Number of constaints:";
+        cin >> m;
+        generate_sample("generated_input.txt", n, m);
         input.open("generated_input.txt");
     }
     else if (answer == 2) {
